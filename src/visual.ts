@@ -220,7 +220,7 @@ export class Visual implements IVisual {
 
                     }
 
-                    else if (columnName == "ratingWithReview") {
+                    else if (columnName == "ratingWithReview"|| columnName == "Rating") {
 
                         const valueset = columnValue.toString().split("\n");
                         const reviewdiv = document.createElement("div");
