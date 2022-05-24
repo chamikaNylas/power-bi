@@ -34,19 +34,13 @@ export class Visual implements IVisual {
         new_p.setAttribute("style", "overflow-x:auto;");
         this.table = document.createElement("table");
         this.table.setAttribute("class", "table table-striped");
-        //this.table.setAttribute("style","font-family: Arial, Helvetica, sans-serif")
-      //  new_p.appendChild(this.createSelectTag());
         new_p.appendChild(this.table);
         this.target.appendChild(new_p);
-
-        //event handler
-      //  this.callupdate();
-
 
     }
 
     public update(options: VisualUpdateOptions) {
-        
+
         console.log("options-update", options);
         const dataView: DataView = options.dataViews[0];
         const tableDataView: DataViewTable = dataView.table;
@@ -63,24 +57,26 @@ export class Visual implements IVisual {
         const tablethedtr = document.createElement("tr");
         tablethead.appendChild(tablethedtr);
         let c = 0;
-        // tableDataView.columns.forEach((column: DataViewMetadataColumn) => {
-           
-        //     const tableHeaderColumn = document.createElement("th");
-        //     tableHeaderColumn.setAttribute("scope", "col")
-        //     tableHeaderColumn.innerText = column.displayName
-        //      if(column.displayName=="ratingWithReview")
-        //          tableHeaderColumn.innerText ="Rating"
-        //      tablethedtr.appendChild(tableHeaderColumn);
-        //      c++;
-        // });
 
+        
+        tableDataView.columns.forEach((column: DataViewMetadataColumn) => {
 
-        for (var key in this.columnNamesforHeader()) {          
             const tableHeaderColumn = document.createElement("th");
             tableHeaderColumn.setAttribute("scope", "col")
-            tableHeaderColumn.innerText = this.columnNamesforHeader()[key];
-            tablethedtr.appendChild(tableHeaderColumn);
-          }
+            tableHeaderColumn.innerText = column.displayName
+             if(column.displayName=="ratingWithReview")
+                 tableHeaderColumn.innerText ="Rating"
+             tablethedtr.appendChild(tableHeaderColumn);
+             c++;
+        });
+
+        //this is for creating clumns with hardcorded names for adding overall row
+        // for (var key in this.columnNamesforHeader()) {
+        //     const tableHeaderColumn = document.createElement("th");
+        //     tableHeaderColumn.setAttribute("scope", "col")
+        //     tableHeaderColumn.innerText = this.columnNamesforHeader()[key];
+        //     tablethedtr.appendChild(tableHeaderColumn);
+        // }
 
 
         //document.getElementById("tr").hidden = true;
@@ -89,7 +85,7 @@ export class Visual implements IVisual {
 
         //draw rows
         const tabletbody = document.createElement("tbody");
-        var track=0;
+        var track = 0;
         tableDataView.rows.forEach((row: DataViewTableRow) => {
 
             console.log("DataViewTableRow", row)
@@ -97,67 +93,112 @@ export class Visual implements IVisual {
             const tableRow = document.createElement("tr");
             let i = 0;
 
-            
+
             row.forEach((columnValue: PrimitiveValue) => {
 
                 let columnName = dataView.table.columns[i].displayName;
-                console.log("colum name",columnName);
-                console.log("column Value",columnValue);
+                console.log("colum name", columnName);
+                console.log("column Value", columnValue);
                 const cell = document.createElement("td");
 
-                if(columnName=="New" && track<1){
-                    const tableRow2 = document.createElement("tr");
-                    console.log("runing overall");
-                    track++;
-                    for (var key in this.columnNamesforHeader()) {          
-                        const coll2 = document.createElement("td");
-                        coll2.innerText = this.columnNamesforHeader()[key];
-                        tableRow2.appendChild(coll2);
-                        tabletbody.appendChild(tableRow2);
-                        
-                      }
+                //this is for adding over overall analitics row with other rows
+                // if (columnName == "Overall Analytics For Records" && track < 1) {
+                //     // const tableRow2 = document.createElement("tr");
+                //     const valueset = columnValue.toString().split("outerSpace");
+                //     console.log("runing overall", valueset);
+                //     track++;
+                //     for (var cColumnValues of valueset) {
 
-                }
-                else if(columnName!="New"){
+                //         console.log("cColumnValues", cColumnValues);
+                //         const cell2 = document.createElement("td");
+                //         // coll2.innerText = this.columnNamesforHeader()[key];
+                //         const columnValues = cColumnValues.toString().split("interSpace");
+                //         if (columnValues[0] == "Overall Analytics") {
+                //             cell2.innerText = columnValues[1].toString();
 
-                      //check column value 
+                //         }
+
+                //         else if (columnValues[0] == "Avg. Response Time") {
+                //             cell2.innerText = this.durationFilter(columnValues[1].toString());
+                //             cell2.append(this.createIconTag());
+
+                //         }
+                //         else if (columnValues[0] == "Conversion Rate") {
+                //             cell2.innerText = Math.round(parseFloat(columnValues[1].toString())).toString() + "%";
+                //             cell2.append(this.createCanvasTag(columnValues[1].toString()));
+                //             this.createChart(columnValue.toString(), Math.round(parseFloat(columnValues[1].toString())));
+                //         }
+                //         else if (this.columnNames().some(format => columnValues[0].includes(format))) {
+                //             const valueset = columnValues[1].toString().split("\n");
+                //             cell2.innerText = valueset[0] + "\n" + "$" + this.currncyformat(Number(valueset[1]));
+
+                //         }
+
+                //         else if (columnValues[0] == "Rating") {
+
+                //             const valueset = columnValues[1].toString().split("\n");
+                //             const reviewdiv = document.createElement("div");
+                //             reviewdiv.setAttribute("style", "margin:0;padding:0;display: flex;");
+                //             const review = document.createElement("p");
+                //             review.innerText = parseFloat(valueset[0]).toFixed(1).toString();
+                //             reviewdiv.appendChild(this.createStarIconTag());
+                //             reviewdiv.appendChild(review);
+
+                //             const ratingdiv = document.createElement("div");
+                //             ratingdiv.setAttribute("style", "margin:0;padding:0;");
+                //             const rating = document.createElement("p");
+                //             rating.innerText = valueset[1].toString();
+                //             ratingdiv.appendChild(rating);
+                //             cell2.appendChild(reviewdiv);
+                //             cell2.appendChild(ratingdiv);
+
+                //         }
+                //         else {
+                //             cell2.innerText = columnValue.toString();
+                //         }
+
+                //         tableRow.appendChild(cell2);
+                //         tabletbody.appendChild(tableRow);
+
+                //     }
+
+                // }
+               // else if (columnName != "Overall Analytics For Records") {
+
+                    //check column value 
                     if (columnName == "Overall Analytics") {
-                        const valueset=columnValue.toString().split("space");
+                        const valueset = columnValue.toString().split("space");
                         const outerdiv = document.createElement("div");
-                        outerdiv.setAttribute("style","display: flex; gap: 10px;")
+                        outerdiv.setAttribute("style", "display: flex; gap: 10px;")
                         const innerimagdiv = document.createElement("div");
-                        
+
                         const innertextdiv = document.createElement("div");
-                        
+
                         innerimagdiv.append(this.createImageTag(valueset[0]));
                         // creating test element 
                         const name = document.createElement("p");
-                        name.setAttribute("style","margin:0;padding:0; font-weight:bold;");
-                        name.innerText=valueset[1];
+                        name.setAttribute("style", "margin:0;padding:0; font-weight:bold;");
+                        name.innerText = valueset[1];
                         const emaildiv = document.createElement("div");
-                        emaildiv.setAttribute("style","margin:0;padding:0;");
+                        emaildiv.setAttribute("style", "margin:0;padding:0;");
                         const email = document.createElement("a");
-                        email.setAttribute("href","mailto:"+valueset[2]);
-                        email.innerText=valueset[2];
+                        email.setAttribute("href", "mailto:" + valueset[2]);
+                        email.innerText = valueset[2];
                         emaildiv.appendChild(this.createEmailIconTag());
                         emaildiv.appendChild(email);
-                        
+
                         const phonediv = document.createElement("div");
-                        phonediv.setAttribute("style","margin:0;padding:0;");
+                        phonediv.setAttribute("style", "margin:0;padding:0;");
                         const phone = document.createElement("a");
-                        phone.setAttribute("style","text-decoration: underline;");
-                        phone.innerText=valueset[3];
+                        phone.setAttribute("style", "text-decoration: underline;");
+                        phone.innerText = valueset[3];
                         phonediv.appendChild(this.createPhoneIconTag());
                         phonediv.appendChild(phone);
-                        
+
                         innertextdiv.appendChild(name);
                         innertextdiv.appendChild(emaildiv);
                         innertextdiv.appendChild(phonediv);
 
-
-
-                        
-                        //innertextdiv.innerText=valueset[1] +"\n"+ valueset[2] +"\n"+ valueset[3];
                         outerdiv.appendChild(innerimagdiv);
                         outerdiv.appendChild(innertextdiv);
                         cell.append(outerdiv);
@@ -166,36 +207,36 @@ export class Visual implements IVisual {
                     else if (columnName == "Avg. Response Time") {
                         cell.innerText = this.durationFilter(columnValue.toString());
                         cell.append(this.createIconTag());
-                    
+
                     }
                     else if (columnName == "Conversion Rate") {
                         cell.innerText = Math.round(parseFloat(columnValue.toString())).toString() + "%";
                         cell.append(this.createCanvasTag(columnValue.toString()));
-                        this.createChart(columnValue.toString(),Math.round(parseFloat(columnValue.toString())));
+                        this.createChart(columnValue.toString(), Math.round(parseFloat(columnValue.toString())));
                     }
-                    else if(this.columnNames().some(format => columnName.includes(format))){
-                        const valueset=columnValue.toString().split("\n");
-                        cell.innerText = valueset[0] +"\n"+"$"+ this.currncyformat(Number(valueset[1]));
+                    else if (this.columnNames().some(format => columnName.includes(format))) {
+                        const valueset = columnValue.toString().split("\n");
+                        cell.innerText = valueset[0] + "\n" + "$" + this.currncyformat(Number(valueset[1]));
 
                     }
 
                     else if (columnName == "ratingWithReview") {
 
-                        const valueset=columnValue.toString().split("\n");
+                        const valueset = columnValue.toString().split("\n");
                         const reviewdiv = document.createElement("div");
-                        reviewdiv.setAttribute("style","margin:0;padding:0;display: flex;");
+                        reviewdiv.setAttribute("style", "margin:0;padding:0;display: flex;");
                         const review = document.createElement("p");
-                        review.innerText=parseFloat(valueset[0]).toFixed(1).toString();
+                        review.innerText = parseFloat(valueset[0]).toFixed(1).toString();
                         reviewdiv.appendChild(this.createStarIconTag());
                         reviewdiv.appendChild(review);
 
                         const ratingdiv = document.createElement("div");
-                        ratingdiv.setAttribute("style","margin:0;padding:0;");
+                        ratingdiv.setAttribute("style", "margin:0;padding:0;");
                         const rating = document.createElement("p");
-                        rating.innerText=valueset[1].toString();
+                        rating.innerText = valueset[1].toString();
                         ratingdiv.appendChild(rating);
                         cell.appendChild(reviewdiv);
-                        cell.appendChild(ratingdiv);                  
+                        cell.appendChild(ratingdiv);
 
                     }
                     else {
@@ -203,10 +244,10 @@ export class Visual implements IVisual {
                     }
 
                     tableRow.appendChild(cell);
-                                     
-               }
-               i = i + 1; 
-             
+
+               // }
+                i = i + 1;
+
             })
 
             // this.table.appendChild(tableRow);
@@ -263,7 +304,7 @@ export class Visual implements IVisual {
     public createEmailIconTag(): HTMLElement {
 
         let icon = document.createElement("i");
-        icon.setAttribute("class","fa-solid fa-envelope");
+        icon.setAttribute("class", "fa-solid fa-envelope");
         icon.setAttribute("style", "margin-right: 1em;");
         return icon;
     }
@@ -271,7 +312,7 @@ export class Visual implements IVisual {
     public createStarIconTag(): HTMLElement {
 
         let icon = document.createElement("i");
-        icon.setAttribute("class","fas fa-star");
+        icon.setAttribute("class", "fas fa-star");
         icon.setAttribute("style", "margin-right: 0.1em;");
         return icon;
     }
@@ -283,7 +324,7 @@ export class Visual implements IVisual {
         return canvas;
     }
 
-    public createChart(id: string,value:number) {
+    public createChart(id: string, value: number) {
 
         GoogleCharts.load(() => {
             // Define the chart to be drawn.
@@ -292,7 +333,7 @@ export class Visual implements IVisual {
             data.addColumn('number', 'Percentage');
             data.addRows([
                 [, value],
-                [, (100-value)],
+                [, (100 - value)],
             ]);
 
             // Set chart options
@@ -333,24 +374,23 @@ export class Visual implements IVisual {
             return num.toString();
         }
         else if (String(num).length < 7) {
-            return  (num / 1000).toFixed(1) + 'K';
+            return (num / 1000).toFixed(1) + 'K';
         }
         else {
-            return  (num / 1000000).toFixed(1) + 'M';
+            return (num / 1000000).toFixed(1) + 'M';
         }
 
     }
-    public columnNames(): string[]
-    {
-       var names=[
-        "Total Leade",
-        "New" ,
-        "Qualified",
-        "Lodged",
-        "OnHold" ,
-        "Approved",
-        "Settled",
-        "Unsuccessful"];
+    public columnNames(): string[] {
+        var names = [
+            "Total Leade",
+            "New",
+            "Qualified",
+            "Lodged",
+            "OnHold",
+            "Approved",
+            "Settled",
+            "Unsuccessful"];
 
         return names;
 
@@ -358,58 +398,51 @@ export class Visual implements IVisual {
 
     public createSelectTag(): HTMLElement {
         const labeltag = document.createElement("label");
-        labeltag.innerText="Response Time";
-        labeltag.setAttribute("for","responseTime");
+        labeltag.innerText = "Response Time";
+        labeltag.setAttribute("for", "responseTime");
         const selecttag = document.createElement("select");
-        selecttag.setAttribute("name","responseTime");
-        selecttag.setAttribute("id","responseTime");
+        selecttag.setAttribute("name", "responseTime");
+        selecttag.setAttribute("id", "responseTime");
         const optiontag1 = document.createElement("option");
-        optiontag1.setAttribute("value","less than 5min");
-        optiontag1.innerText="less than 5min";
+        optiontag1.setAttribute("value", "less than 5min");
+        optiontag1.innerText = "less than 5min";
         const optiontag2 = document.createElement("option");
-        optiontag2.setAttribute("value","less than 10mins");
-        optiontag2.innerText="less than 10mins";
+        optiontag2.setAttribute("value", "less than 10mins");
+        optiontag2.innerText = "less than 10mins";
         selecttag.appendChild(optiontag1);
         selecttag.appendChild(optiontag2);
         labeltag.appendChild(selecttag);
         return labeltag;
     }
 
-    public callupdate()
-    {
-        const selectElement =<HTMLSelectElement> document.getElementById("responseTime");
-        selectElement.addEventListener('change', (event:Event) => {
+    public callupdate() {
+        const selectElement = <HTMLSelectElement>document.getElementById("responseTime");
+        selectElement.addEventListener('change', (event: Event) => {
             console.log('You selected: ', event);
             var value = selectElement.options[selectElement.selectedIndex].value;
-            console.log("value",value);            
-     
-       });
+            console.log("value", value);
+
+        });
 
     }
 
-    public columnNamesforHeader(): string[]
-    {
-       var cnames=[
-        "",
-        "Avg. Response Time",
-        "Rating",
-        "Conversion Rate",
-        "Total Leade",
-        "New" ,
-        "Qualified",
-        "Lodged",
-        "OnHold" ,
-        "Approved",
-        "Settled",
-        "Unsuccessful"];
+    public columnNamesforHeader(): string[] {
+        var cnames = [
+            "",
+            "Avg. Response Time",
+            "Rating",
+            "Conversion Rate",
+            "Total Leade",
+            "New",
+            "Qualified",
+            "Lodged",
+            "OnHold",
+            "Approved",
+            "Settled",
+            "Unsuccessful"];
 
         return cnames;
 
     }
-
-    
-
-    
-
 
 }
